@@ -20,6 +20,7 @@ button {
   box-shadow: none;
   border: none;
   box-sizing: border-box;
+  cursor: pointer;
 }
 
 .app {
@@ -47,7 +48,7 @@ button {
   z-index: 1;
 }
 
-.time-select,
+.time-selector,
 .sound-picker,
 .player-container {
   height: 80%;
@@ -57,7 +58,7 @@ button {
   z-index: 2;
 }
 
-.time-select,
+.time-selector,
 .sound-picker {
   display: flex;
   justify-content: space-evenly;
@@ -65,7 +66,7 @@ button {
   flex-direction: column;
 }
 
-.time-select button {
+.time-selector button {
   border: 1.5px solid rgba(255, 255, 255, 0.8);
   padding: 14px 8px;
   min-width: 7rem;
@@ -97,11 +98,13 @@ button {
   width: 90px;
   margin-top: -45px;
   margin-left: -45px;
+  z-index: 10;
 }
 
 .play,
 .track-outline,
-.moving-outline {
+.moving-outline,
+.replay {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -120,4 +123,11 @@ button {
   top: 50%;
   margin-top: 130px;
   font-family: serif;
+}
+
+.replay {
+  margin-top: -150px;
+  margin-left: -100px;
+  width: 200px;
+  display: none;
 }
