@@ -27,8 +27,11 @@ timeDisplay.textContent = `${Math.floor(fakeDuration / 60)}:${Math.floor(
 sounds.forEach(sound => {
   //addEventListenerの第一引数のイベントが起こるたびに発火
   sound.addEventListener("click", () => {
+    console.log(song.src);
     song.src = sound.getAttribute("data-sound");
     video.src = sound.getAttribute("data-video");
+    console.log(song.src);
+
     checkPlaying(song);
   });
 });
@@ -53,15 +56,15 @@ timeSelect.forEach(option => {
 });
 
 const checkPlaying = song => {
-  song.paused
-  ?
+  if (song.paused) {
     song.play();
     video.play();
     play.src = "./svg/pause.svg";
-  :
+  } else {
     song.pause();
     video.pause();
     play.src = "./svg/play.svg";
+  }
 };
 
 song.ontimeupdate = () => {
