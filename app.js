@@ -1,12 +1,15 @@
+//querySelectorで各セレクタを変数に代入
 const song = document.querySelector(".song");
 const play = document.querySelector(".play");
 const replay = document.querySelector(".replay");
 const outline = document.querySelector(".moving-outline circle");
 const video = document.querySelector(".vid-container video");
 //Sounds
+// querySelectorAllを使用すると、引数に指定したセレクタに該当するセレクタ全てが配列に格納される
 const sounds = document.querySelectorAll(".sound-picker button");
 //Time Display
 const timeDisplay = document.querySelector(".time-display");
+// getTotalLengthでSVG要素の長さを取得
 const outlineLength = outline.getTotalLength();
 //Duration
 const timeSelect = document.querySelectorAll(".time-selector button");
@@ -16,6 +19,7 @@ let fakeDuration = 600;
 // stroke-dashoffset:svgパスが始まる値
 outline.style.strokeDashoffset = outlineLength;
 outline.style.strokeDasharray = outlineLength;
+// textContentはHTMLを解釈せずにそのまま文字として出力する
 timeDisplay.textContent = `${Math.floor(fakeDuration / 60)}:${Math.floor(
   fakeDuration % 60
 )}`;
@@ -29,20 +33,13 @@ sounds.forEach(sound => {
   });
 });
 
-play.addEventListener("click", function() {
-  console.log(1);
+play.addEventListener("click", () => {
   checkPlaying(song);
 });
 
-replay.addEventListener("click", function() {
-  restartSong(song);
-});
-
-const restartSong = song => {
-  let currentTime = song.currentTime;
+replay.addEventListener("click", () => {
   song.currentTime = 0;
-  console.log("ciao");
-};
+});
 
 timeSelect.forEach(option => {
   option.addEventListener("click", () => {
@@ -56,18 +53,18 @@ timeSelect.forEach(option => {
 });
 
 const checkPlaying = song => {
-  if (song.paused) {
+  song.paused
+  ?
     song.play();
     video.play();
     play.src = "./svg/pause.svg";
-  } else {
+  :
     song.pause();
     video.pause();
     play.src = "./svg/play.svg";
-  }
 };
 
-song.ontimeupdate = function() {
+song.ontimeupdate = () => {
   let currentTime = song.currentTime;
   let elapsed = fakeDuration - currentTime;
   let seconds = Math.floor(elapsed % 60);
