@@ -1,22 +1,5 @@
 {
-  "name": "meditation-app",
-  "version": "1.0.0",
-  "description": "Meditation app tutorial",
-  "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/hanahageWanko/meditation-app.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/hanahageWanko/meditation-app/issues"
-  },
-  "homepage": "https://github.com/hanahageWanko/meditation-app#readme",
   "devDependencies": {
-    "jest": "^26.4.2"
+    "vue-cli": "^2.9.6"
   }
 }
