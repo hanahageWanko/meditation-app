@@ -44,12 +44,6 @@
           stroke-width="20"
         />
       </svg>
-      <img
-        src="./svg/replay.svg"
-        class="replay"
-        ref="replay"
-        @click="this.getSong().currentTime = 0"
-      />
       <h3 class="time-display" ref="timedisplay">0:00</h3>
     </div>
     <div class="sound-picker">
@@ -59,7 +53,7 @@
         @click="selectSound(sound)"
         :class="`sound-${sound}`"
       >
-        <img src="./svg/rain.svg" alt="rain" />
+        <img :src="`./svg/${sound}.svg`" alt="rain" />
       </button>
     </div>
   </div>
@@ -83,8 +77,6 @@ export default {
     };
   },
   mounted() {
-    // console.log(this.$refs["track-outline"][0].outerHTML);
-    // console.log(this.$refs["moving-outline"][0].outerHTML);
     this.initialState();
     this.onTimeUpdate();
   },
@@ -96,10 +88,6 @@ export default {
     getPlay() {
       const play = this.$refs.play;
       return play;
-    },
-    getReplay() {
-      const replay = this.$refs.replay;
-      return replay;
     },
     getOutline() {
       const outline = this.$refs["moving-outline"][0];
@@ -124,11 +112,10 @@ export default {
     selectSound(sound) {
       this.getSong().src = `./sounds/${sound}.mp3`;
       this.getVideo().src = `./video/${sound}.mp4`;
-      this.checkPlaying(this.getSong());
+      this.checkPlaying("play");
     },
-    checkPlaying() {
-      console.log();
-      if (this.getSong().paused) {
+    checkPlaying(state) {
+      if (state == "play" || this.getSong().paused) {
         this.getSong().play();
         this.getVideo().play();
         this.getPlay().src = "./svg/pause.svg";
@@ -143,6 +130,8 @@ export default {
       this.getTimeDisplay().textContent = `${Math.floor(
         this.fakeDuration / 60
       )}:${Math.floor(this.fakeDuration % 60)}`;
+      this.checkPlaying("play");
+      this.getSong().currentTime = 0;
     },
     onTimeUpdate() {
       this.getSong().addEventListener("timeupdate", () => {
