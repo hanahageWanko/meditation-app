@@ -2,7 +2,7 @@
   <div class="app">
     <div class="vid-container">
       <video loop class="vid-inner" ref="video">
-        <source src="./video/rain.mp4" type="video/mp4" />
+        <source src="../public/static/video/rain.mp4" type="video/mp4" />
       </video>
     </div>
     <div class="time-selector">
@@ -18,10 +18,10 @@
     </div>
     <div class="player-container">
       <audio class="song" ref="song">
-        <source src="./sounds/rain.mp3" />
+        <source src="../public/static/sounds/rain.mp3" />
       </audio>
       <img
-        src="./svg/play.svg"
+        src="../public/static/svg/play.svg"
         alt="play"
         class="play"
         ref="play"
@@ -53,7 +53,7 @@
         @click="selectSound(sound)"
         :class="`sound-${sound}`"
       >
-        <img :src="`./svg/${sound}.svg`" alt="rain" />
+        <img :src="`../static/svg/${sound}.svg`" :alt="sound" />
       </button>
     </div>
   </div>
@@ -110,19 +110,19 @@ export default {
       return timeSelects;
     },
     selectSound(sound) {
-      this.getSong().src = `./sounds/${sound}.mp3`;
-      this.getVideo().src = `./video/${sound}.mp4`;
+      this.getSong().src = `./static/sounds/${sound}.mp3`;
+      this.getVideo().src = `./static/video/${sound}.mp4`;
       this.checkPlaying("play");
     },
     checkPlaying(state) {
       if (state == "play" || this.getSong().paused) {
         this.getSong().play();
         this.getVideo().play();
-        this.getPlay().src = "./svg/pause.svg";
+        this.getPlay().src = "../static/svg/pause.svg";
       } else {
         this.getSong().pause();
         this.getVideo().pause();
-        this.getPlay().src = "./svg/play.svg";
+        this.getPlay().src = "./static/svg/play.svg";
       }
     },
     timeSet(time) {
@@ -148,7 +148,7 @@ export default {
         if (currentTime >= this.fakeDuration) {
           this.getSong().pause();
           this.getSong().currentTime = 0;
-          this.getPlay().src = "./svg/play.svg";
+          this.getPlay().src = "./static/svg/play.svg";
           this.getVideo().pause();
         }
       });
