@@ -59,109 +59,122 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "App",
-  components: {},
-  data() {
-    return {
-      timeSelector: [120, 300, 600],
-      circles: [
-        { class: "track-outline", color: "white" },
-        { class: "moving-outline", color: "#018EBA" }
-      ],
-      sounds: ["rain", "beach"],
-      currentSong: "rain",
-      fakeDuration: 600,
-      playing: ["pause", "play"]
-    };
-  },
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+
+export default class App extends Vue {
+  name!: "App";
+  // data
+  timeSelector: object = [120, 300, 600];
+  circles: object = [
+    { class: "track-outline", color: "white" },
+    { class: "moving-outline", color: "#018EBA" }
+  ];
+  sounds: object = ["rain", "beach"];
+  currentSong: string = "rain";
+  fakeDuration: number = 600;
+  playing: object = ["pause", "play"];
+
   mounted() {
     this.initialState();
     this.onTimeUpdate();
-  },
-  methods: {
-    getSong() {
-      const song = this.$refs.song;
-      return song;
-    },
-    getPlay() {
-      const play = this.$refs.play;
-      return play;
-    },
-    getOutline() {
-      const outline = this.$refs["moving-outline"][0];
-      return outline;
-    },
-    getVideo() {
-      const video = this.$refs.video;
-      return video;
-    },
-    getTimeDisplay() {
-      const timeDisplay = this.$refs.timedisplay;
-      return timeDisplay;
-    },
-    getOutlineLength() {
-      const outlineLength = this.getOutline().getTotalLength();
-      return outlineLength;
-    },
-    getTimeSelect() {
-      const timeSelects = this.$refs.timeselect;
-      return timeSelects;
-    },
-    selectSound(sound) {
-      this.getSong().src = `./static/sounds/${sound}.mp3`;
-      this.getVideo().src = `./static/video/${sound}.mp4`;
-      this.checkPlaying("play");
-    },
-    checkPlaying(state) {
-      if (state == "play" || this.getSong().paused) {
-        this.getSong().play();
-        this.getVideo().play();
-        this.getPlay().src = "../static/svg/pause.svg";
-      } else {
-        this.getSong().pause();
-        this.getVideo().pause();
-        this.getPlay().src = "./static/svg/play.svg";
-      }
-    },
-    timeSet(time) {
-      this.fakeDuration = time;
-      this.getTimeDisplay().textContent = `${Math.floor(
-        this.fakeDuration / 60
-      )}:${Math.floor(this.fakeDuration % 60)}`;
-      this.checkPlaying("play");
-      this.getSong().currentTime = 0;
-    },
-    onTimeUpdate() {
-      this.getSong().addEventListener("timeupdate", () => {
-        let currentTime = this.getSong().currentTime;
-        let elapsed = this.fakeDuration - currentTime;
-        let seconds = Math.floor(elapsed % 60);
-        let minutes = Math.floor(elapsed / 60);
-        this.getTimeDisplay().textContent = `${minutes}:${seconds}`;
-        let progress =
-          this.getOutlineLength() -
-          (currentTime / this.fakeDuration) * this.getOutlineLength();
-        this.getOutline().style.strokeDashoffset = progress;
+  }
 
-        if (currentTime >= this.fakeDuration) {
-          this.getSong().pause();
-          this.getSong().currentTime = 0;
-          this.getPlay().src = "./static/svg/play.svg";
-          this.getVideo().pause();
-        }
-      });
-    },
-    initialState() {
-      this.getOutline().style.strokeDashoffset = this.getOutlineLength();
-      this.getOutline().style.strokeDasharray = this.getOutlineLength();
-      this.getTimeDisplay().textContent = `${Math.floor(
-        this.fakeDuration / 60
-      )}:${Math.floor(this.fakeDuration % 60)}`;
+  public get refs(): any {
+    return this.$refs;
+  }
+
+  public getSong(): any {
+    const song = this.refs().song;
+    return song;
+  }
+
+  public getPlay(): any {
+    const play = this.refs().play;
+    return play;
+  }
+
+  public getOutline(): any {
+    const outline = this.refs()["moving-outline"][0];
+    return outline;
+  }
+
+  public getVideo(): any {
+    const video = this.$refs.video;
+    return video;
+  }
+
+  public getTimeDisplay(): any {
+    const timeDisplay = this.$refs.timedisplay;
+    return timeDisplay;
+  }
+
+  public getOutlineLength(): number {
+    const outlineLength: number = this.getOutline().getTotalLength();
+    return outlineLength;
+  }
+
+  public getTimeSelect() {
+    const timeSelects = this.$refs.timeselect;
+    return timeSelects;
+  }
+
+  public selectSound(sound: string): void {
+    this.getSong().src = `./static/sounds/${sound}.mp3`;
+    this.getVideo().src = `./static/video/${sound}.mp4`;
+    this.checkPlaying("play");
+  }
+
+  public checkPlaying(state: string) {
+    if (state == "play" || this.getSong().paused) {
+      this.getSong().play();
+      this.getVideo().play();
+      this.getPlay().src = "../static/svg/pause.svg";
+    } else {
+      this.getSong().pause();
+      this.getVideo().pause();
+      this.getPlay().src = "./static/svg/play.svg";
     }
   }
-};
+
+  public timeSet(time: number): void {
+    this.fakeDuration = time;
+    this.getTimeDisplay().textContent = `${Math.floor(
+      this.fakeDuration / 60
+    )}:${Math.floor(this.fakeDuration % 60)}`;
+    this.checkPlaying("play");
+    this.getSong().currentTime = 0;
+  }
+
+  public onTimeUpdate(): void {
+    this.getSong().addEventListener("timeupdate", () => {
+      let currentTime = this.getSong().currentTime;
+      let elapsed = this.fakeDuration - currentTime;
+      let seconds = Math.floor(elapsed % 60);
+      let minutes = Math.floor(elapsed / 60);
+      this.getTimeDisplay().textContent = `${minutes}:${seconds}`;
+      let progress =
+        this.getOutlineLength() -
+        (currentTime / this.fakeDuration) * this.getOutlineLength();
+      this.getOutline().style.strokeDashoffset = progress;
+
+      if (currentTime >= this.fakeDuration) {
+        this.getSong().pause();
+        this.getSong().currentTime = 0;
+        this.getPlay().src = "./static/svg/play.svg";
+        this.getVideo().pause();
+      }
+    });
+  }
+
+  public initialState(): void {
+    this.getOutline().style.strokeDashoffset = this.getOutlineLength();
+    this.getOutline().style.strokeDasharray = this.getOutlineLength();
+    this.getTimeDisplay().textContent = `${Math.floor(
+      this.fakeDuration / 60
+    )}:${Math.floor(this.fakeDuration % 60)}`;
+  }
+}
 </script>
 
 <style>
