@@ -100,12 +100,12 @@ export default class App extends Vue {
   }
 
   public getVideo(): any {
-    const video = this.$refs.video;
+    const video = this.refs().video;
     return video;
   }
 
   public getTimeDisplay(): any {
-    const timeDisplay = this.$refs.timedisplay;
+    const timeDisplay = this.refs().timedisplay;
     return timeDisplay;
   }
 
@@ -115,7 +115,7 @@ export default class App extends Vue {
   }
 
   public getTimeSelect() {
-    const timeSelects = this.$refs.timeselect;
+    const timeSelects = this.refs().timeselect;
     return timeSelects;
   }
 
