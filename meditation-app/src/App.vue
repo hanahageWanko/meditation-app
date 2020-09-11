@@ -56,6 +56,7 @@
         <img :src="`../static/svg/${sound}.svg`" :alt="sound" />
       </button>
     </div>
+    <div @click="sum()"></div>
   </div>
 </template>
 
@@ -82,6 +83,10 @@ export default class App extends Vue {
 
   public get refs(): any {
     return this.$refs;
+  }
+
+  public sum(a: number, b: number): number {
+    return a + b;
   }
 
   public getSong(): any {
