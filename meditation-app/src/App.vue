@@ -47,34 +47,40 @@
       <h3 class="time-display" ref="timedisplay">0:00</h3>
     </div>
     <div class="sound-picker">
-      <button
+      <SoundButton
         v-for="sound in sounds"
         :key="sound"
-        @click="selectSound(sound)"
+        @sound="selectSound(sound)"
         :class="`sound-${sound}`"
-      >
-        <img :src="`../static/svg/${sound}.svg`" :alt="sound" />
-      </button>
+      />
     </div>
-    <div @click="sum()"></div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import SoundButton from "@/components/soundButton.vue";
 
+@Component({
+  components: {
+    SoundButton,
+  },
+})
 export default class App extends Vue {
   name!: "App";
   // data
-  timeSelector: object = [120, 300, 600];
-  circles: object = [
+  timeSelector: number[] = [120, 300, 600];
+  circles: {
+    class: string;
+    color: string;
+  }[] = [
     { class: "track-outline", color: "white" },
-    { class: "moving-outline", color: "#018EBA" }
+    { class: "moving-outline", color: "#018EBA" },
   ];
-  sounds: object = ["rain", "beach"];
-  currentSong: string = "rain";
-  fakeDuration: number = 600;
-  playing: object = ["pause", "play"];
+  sounds: string[] = ["rain", "beach"];
+  currentSong = "rain";
+  fakeDuration = 600;
+  playing: string[] = ["pause", "play"];
 
   mounted() {
     this.initialState();
