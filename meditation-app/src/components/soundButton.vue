@@ -1,22 +1,19 @@
 <template>
-  <button @click="emitSound(sound)">
-    <img :src="`../static/svg/${sound}.svg`" :alt="sound" />
+  <button @click="emitSound(selectedSound)">
+    <img :src="`../static/svg/${selectedSound}.svg`" :alt="selectedSound" />
   </button>
 </template>
 
 <script lang="ts">
-import { Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 
-interface Prop {
-  sound: string;
-}
-
+@Component
 export default class SoundButton extends Vue {
-  @Prop({ required: true })
-  public sound!: string;
+  @Prop()
+  public selectedSound!: string;
 
   public emitSound(sound: string) {
-    return this.$emit(sound);
+    return this.$emit("soundEvent");
   }
 }
 </script>

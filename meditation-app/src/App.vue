@@ -6,51 +6,35 @@
       </video>
     </div>
     <div class="time-selector">
-      <button
+      <TimeButton
         v-for="time in timeSelector"
         :key="time"
         :data-time="time"
         ref="timeselect"
-        @click="timeSet(time)"
+        :selectedTime="time"
+        @timeEvent="timeSet(time)"
       >
         {{ time / 60 }} Minutes
-      </button>
+      </timeButton>
     </div>
     <div class="player-container">
       <audio class="song" ref="song">
         <source src="../public/static/sounds/rain.mp3" />
       </audio>
-      <img
-        src="../public/static/svg/play.svg"
-        alt="play"
-        class="play"
+      <PlayButton
+        :circles="circles"
+        :playIng="playing"
         ref="play"
-        @click="checkPlaying()"
+        @playEvent="checkPlaying()"
       />
-      <svg
-        v-for="(circle, index) of circles"
-        :key="`${circle.class}-${index}`"
-        :class="circle.class"
-        viewBox="0 0 453 453"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <circle
-          :ref="circle.class"
-          cx="226.5"
-          cy="226.5"
-          r="216.5"
-          :stroke="circle.color"
-          stroke-width="20"
-        />
-      </svg>
-      <h3 class="time-display" ref="timedisplay">0:00</h3>
+      <h3 class="time-display" ref="timedisplay"></h3>
     </div>
     <div class="sound-picker">
       <SoundButton
         v-for="sound in sounds"
         :key="sound"
-        @sound="selectSound(sound)"
+        :selectedSound="sound"
+        @soundEvent="selectSound(sound)"
         :class="`sound-${sound}`"
       />
     </div>
@@ -58,12 +42,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Emit, Vue } from "vue-property-decorator";
 import SoundButton from "@/components/soundButton.vue";
+import TimeButton from "@/components/timeButton.vue";
+import PlayButton from "@/components/playButton.vue";
 
 @Component({
   components: {
     SoundButton,
+    TimeButton,
+    PlayButton
   },
 })
 export default class App extends Vue {
@@ -87,12 +75,8 @@ export default class App extends Vue {
     this.onTimeUpdate();
   }
 
-  public get refs(): any {
+  public refs(): any {
     return this.$refs;
-  }
-
-  public sum(a: number, b: number): number {
-    return a + b;
   }
 
   public getSong(): any {
@@ -101,12 +85,13 @@ export default class App extends Vue {
   }
 
   public getPlay(): any {
+    console.log(this.refs().play);
     const play = this.refs().play;
     return play;
   }
 
   public getOutline(): any {
-    const outline = this.refs()["moving-outline"][0];
+    const outline = this.refs().play.$refs["moving-outline"][0];
     return outline;
   }
 
@@ -285,17 +270,8 @@ button {
   text-align: center;
 }
 
-.play {
-  width: 90px;
-  margin-top: -45px;
-  margin-left: -45px;
-  z-index: 10;
-}
-
-.play,
 .track-outline,
-.moving-outline,
-.replay {
+.moving-outline{
   position: absolute;
   top: 50%;
   left: 50%;
@@ -316,10 +292,4 @@ button {
   font-family: serif;
 }
 
-.replay {
-  margin-top: -150px;
-  margin-left: -100px;
-  width: 200px;
-  display: none;
-}
 </style>
