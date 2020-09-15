@@ -85,13 +85,15 @@ export default class App extends Vue {
   }
 
   public getPlay(): any {
-    console.log(this.refs().play);
     const play = this.refs().play;
     return play;
   }
 
   public getOutline(): any {
-    const outline = this.refs().play.$refs["moving-outline"][0];
+    if(!Object.keys(this.getPlay().$refs).length) {
+      return
+    }
+    let outline = this.getPlay().$refs["moving-outline"][0];
     return outline;
   }
 
@@ -164,6 +166,7 @@ export default class App extends Vue {
   }
 
   public initialState(): void {
+    if(!this.getOutline()) return;
     this.getOutline().style.strokeDashoffset = this.getOutlineLength();
     this.getOutline().style.strokeDasharray = this.getOutlineLength();
     this.getTimeDisplay().textContent = `${Math.floor(
